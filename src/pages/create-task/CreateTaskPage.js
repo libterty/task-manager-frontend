@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { TextField, FormControl, Button } from '@material-ui/core';
-import styled from 'styled-components';
-import { inject } from 'mobx-react';
-import ErrorMessage from '../../components/ErrorMessage';
+import React, { Component } from "react";
+import { TextField, FormControl, Button } from "@material-ui/core";
+import styled from "styled-components";
+import { inject } from "mobx-react";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const FormWrapper = styled.div`
   width: 100vw;
@@ -20,15 +20,15 @@ const FormContainer = styled.div`
   border-radius: 5px;
 `;
 
-@inject('tasksStore', 'routerStore')
+@inject("tasksStore", "routerStore")
 class CreateTaskPage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      title: '',
-      description: '',
-      errorMessage: null,
+      title: "",
+      description: "",
+      errorMessage: null
     };
   }
 
@@ -38,8 +38,9 @@ class CreateTaskPage extends Component {
 
     try {
       await tasksStore.createTask(title, description);
-      routerStore.push('/tasks');
+      routerStore.push("/tasks");
     } catch (error) {
+      // console.log("error", error);
       const errorMessage = error.response.data.message;
       this.setState({ errorMessage });
     }
@@ -52,7 +53,9 @@ class CreateTaskPage extends Component {
           <h1>Create a new task</h1>
           <p>Provide information about the task you wish to complete.</p>
 
-          { this.state.errorMessage && <ErrorMessage message={this.state.errorMessage} />}
+          {this.state.errorMessage && (
+            <ErrorMessage message={this.state.errorMessage} />
+          )}
 
           <FormControl fullWidth>
             <TextField
@@ -76,7 +79,7 @@ class CreateTaskPage extends Component {
           </FormControl>
 
           <Button
-            style={{ marginTop: '10px' }}
+            style={{ marginTop: "10px" }}
             fullWidth
             variant="contained"
             color="primary"

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { inject, observer } from 'mobx-react';
-import { Fab, IconButton } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-import SignOutIcon from '@material-ui/icons/ExitToApp'
-import styled from 'styled-components';
-import Task from '../../components/Task';
-import TasksFilters from '../../components/TasksFilters';
+import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
+import { Fab, IconButton } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
+import SignOutIcon from "@material-ui/icons/ExitToApp";
+import styled from "styled-components";
+import Task from "../../components/Task";
+import TasksFilters from "../../components/TasksFilters";
 
 const TasksWrapper = styled.div`
   width: 100%;
@@ -45,33 +45,37 @@ const EmptyTasksPlaceholder = styled.p`
 
 const SignOutIconContainer = styled.div`
   margin-left: 10px;
-  
+
   .signOutIcon {
     fill: #edf4ff;
   }
 `;
 
-@inject('tasksStore', 'routerStore', 'userStore')
+@inject("tasksStore", "routerStore", "userStore")
 @observer
 class TasksPage extends Component {
   componentDidMount() {
     this.props.tasksStore.fetchTasks();
   }
-  
+
   handleSignOut = () => {
     const { userStore, tasksStore, routerStore } = this.props;
     userStore.signout();
     tasksStore.resetTasks();
-    routerStore.push('/signin');
+    routerStore.push("/signin");
   };
 
   renderTasks = () => {
     const { tasksStore } = this.props;
 
     if (!tasksStore.tasks.length) {
-      return <EmptyTasksPlaceholder>No tasks available. Create one?</EmptyTasksPlaceholder>
+      return (
+        <EmptyTasksPlaceholder>
+          No tasks available. Create one?
+        </EmptyTasksPlaceholder>
+      );
     }
-
+    console.log("taskStore", tasksStore);
     return tasksStore.tasks.map(task => (
       <Task
         key={task.id}
@@ -92,7 +96,7 @@ class TasksPage extends Component {
           <CreateButtonContainer>
             <Fab
               variant="extended"
-              onClick={() => this.props.routerStore.push('/tasks/create')}
+              onClick={() => this.props.routerStore.push("/tasks/create")}
             >
               <AddIcon />
               Create Task
@@ -108,9 +112,7 @@ class TasksPage extends Component {
 
         <TasksFilters />
 
-        <TasksContainer>
-          {this.renderTasks()}
-        </TasksContainer>
+        <TasksContainer>{this.renderTasks()}</TasksContainer>
       </TasksWrapper>
     );
   }

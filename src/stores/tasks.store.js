@@ -1,8 +1,8 @@
-import { observable, action } from 'mobx';
+import { observable, action } from "mobx";
 
 export default class TasksStore {
   @observable tasks = [];
-  @observable filters = { status: '', search: '' };
+  @observable filters = { status: "", search: "" };
 
   constructor(tasksService) {
     this.tasksService = tasksService;
@@ -30,8 +30,13 @@ export default class TasksStore {
 
   @action
   async createTask(title, description) {
-    const result = await this.tasksService.createTask(title, description);
-
+    let result;
+    try {
+      result = await this.tasksService.createTask(title, description);
+    } catch (error) {
+      console.log("error create", error);
+    }
+    console.log("resuslt", result);
     if (result) {
       this.tasks.push(result.data);
     }
